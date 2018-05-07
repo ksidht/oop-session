@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests;
 use Illuminate\Http\Request;
 use Auth;
+use Session;
+use Log;
 
 class HomeController extends Controller
 {
@@ -14,7 +17,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->only('index');
     }
 
     /**
@@ -24,18 +27,27 @@ class HomeController extends Controller
      */
     public function index()
     {
-        dd(Auth::user());
+        
+        Session::flash('password', 'Vrisabh');
+        $session = Session::all();
+        Log::info('test');
         return view('home');
     }
 
     public function about()
     {
-    	return view('home.about');
-
+        // Session::forget('password');
+        return response()->json(Session::all());
     }
 
     public function contact()
     {
-    	return view('home.contact');
-    }   
+        return response()->json(Session::all());
+    }
+
+    public function test()
+    {
+        Session::reflash();
+        return response()->json(Session::all());
+    }
 }

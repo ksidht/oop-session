@@ -17,8 +17,12 @@ Route::get('/', function () {
 
 Route::get('home', 'HomeController@index')->name('home');
 
-Route::get('about', 'HomeController@about')->name('about');
-Route::get('contact', 'HomeController@contact')->name('contact');
+
+
+Route::prefix('admin')->middleware('test')->namespace('Admin')->group(function() {
+	Route::get('about', 'HomeController@about');
+	Route::get('contact', 'HomeController@contact');
+});
 
 
 // Route::post($uri, $callback);
@@ -35,3 +39,8 @@ Route::get('contact', 'HomeController@contact')->name('contact');
 
 // Route::view('/students', 'welcome');
 
+
+Auth::routes();
+
+Route::get('about', 'HomeController@about')->name('about');
+Route::get('contact', 'HomeController@contact')->name('contact');
